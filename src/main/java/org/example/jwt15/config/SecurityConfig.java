@@ -92,6 +92,21 @@ public class SecurityConfig {
                                 "/api/users/**")
                         .hasRole("ADMIN")
 
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/reviews")
+                        .hasRole("CUSTOMER")
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/products/*/reviews")
+                        .authenticated()
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/reports/revenue")
+                        .hasRole("ADMIN")
+
                         .anyRequest()
                         .authenticated()
                 )
