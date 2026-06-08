@@ -45,29 +45,52 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/api/auth/**"
-                        ).permitAll()
+                        // Auth
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/api/products/**"
-                        ).permitAll()
+                        // Product
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/products/**")
+                        .permitAll()
 
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/products/**"
-                        ).hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/products/**")
+                        .hasAnyRole("ADMIN", "STAFF")
 
-                        .requestMatchers(
-                                HttpMethod.PUT,
-                                "/api/products/**"
-                        ).hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/products/**")
+                        .hasAnyRole("ADMIN", "STAFF")
 
-                        .requestMatchers(
-                                HttpMethod.DELETE,
-                                "/api/products/**"
-                        ).hasAnyRole("ADMIN", "STAFF")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/products/**")
+                        .hasAnyRole("ADMIN", "STAFF")
+
+                        // Order
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/orders")
+                        .hasRole("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/orders/my")
+                        .hasRole("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/orders")
+                        .hasAnyRole("STAFF", "ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/orders/*/status")
+                        .hasRole("STAFF")
+
+                        // User
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/users/me")
+                        .authenticated()
+
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/users/**")
+                        .hasRole("ADMIN")
 
                         .anyRequest()
                         .authenticated()
